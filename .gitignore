@@ -5,3 +5,5 @@ YCOM_2024_publicdata.xlsx
 utils/__pycache__/
 gowalla_total.csv
 gowalla_data/
+tl_2020_us_county/
+tl_2024_us_county/
