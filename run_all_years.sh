@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PYTHON=/opt/anaconda3/bin/python3
-SCRIPT="$(dirname "$0")/fixed_fj.py"
+SCRIPT="$(dirname "$0")/run_fj.py"
 
 for year in 2018 2019 2020 2021 2022 2023 2024; do
     echo "========================================"

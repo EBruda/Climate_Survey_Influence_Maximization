@@ -1,0 +1,16 @@
+name: climate-env
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pandas
+  - networkx
+  - scipy
+  - matplotlib
+  - plotly
+  - tqdm
+  - pip
+  - pip:
+      - reverse_geocoder

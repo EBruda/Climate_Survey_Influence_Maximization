@@ -2,27 +2,42 @@
 
 This project applies the Friedkin-Johnsen (FJ) opinion dynamics model to U.S. county-level climate opinion data, using the Gowalla social network to identify the most influential nodes for shifting public opinion on climate change.
 
-## Data Sources
+## Data Source Set up
 
 - **Yale Climate Opinion Maps (YCOM)** — `YCOM_2024_publicdata.xlsx`  
-  County-level survey data on climate opinions (2010–2024). Download from [Yale Program on Climate Change Communication](https://climatecommunication.yale.edu/visualizations-data/ycom-us/) after signing up for it.
+  County-level survey data on climate opinions (2010–2024). Download from [Yale Program on Climate Change Communication](https://climatecommunication.yale.edu/visualizations-data/ycom-us/) after signing up for it. Place the `YCOM_2024_publicdata.xlsx` file in the root directory. 
 
 - **Gowalla** — `gowalla_data/`  
-  A location-based social network with check-in data used to construct a friendship graph of U.S. users. Download from [SNAP](https://snap.stanford.edu/data/loc-Gowalla.html).
+  A location-based social network with check-in data used to construct a friendship graph of U.S. users. Download from [SNAP](https://snap.stanford.edu/data/loc-Gowalla.html). Download the `loc-gowalla_edges.txt.gz` and `loc-gowalla_totalCheckins.txt.gz	` files. Unzip both and place their unzipped files in the `gowalla_data` folder in the root directory. 
+
+  After setting up both data sources, your root directory should contain:
+  ```
+  gowalla_data/
+    - Gowalla_edges.txt
+    - Gowalla_totalCheckins.txt
+
+  YCOM_2024_publicdata.xlsx
+  ```
+
+## Environment Setup 
+Create the environment by running `conda env create -f environment.yml`
+
+Then activate the environment using `conda activate climate-env`
 
 ## Main Scripts
 
-### [`fixed_fj.py`](fixed_fj.py)
+### [`run_fj.py`](run_fj.py)
 The core pipeline. Run it for a single year via:
 ```bash
-python fixed_fj.py --year 2022
+python run_fj.py --year 2022
 ```
 
 It runs four stages in sequence:
 
-1. **Build network graph** — Loads YCOM county opinions and Gowalla check-ins, reverse-geocodes users to their home county, and constructs a weighted `networkx` graph where each node holds a baseline opinion derived from the YCOM "worried/worriedOppose" survey question. Cached as `network_graphs/network_graph_fj_{year}.pickle`.
+1. **Build network graph** — Loads YCOM county opinions and Gowalla check-ins, reverse-geocodes users to their home county, and constructs a weighted `networkx` graph where each node holds a baseline opinion derived from the YCOM "worried/worriedOppose" survey question. 
+This uses the cached network graphs found at `network_graphs/network_graph_fj_{year}.pickle`. If you would like to build the network graph for that year from scratch, then run the `create_network_graph.ipynb` notebook first.  
 
-2. **FJ simulation** — Runs the Friedkin-Johnsen iterative update (`x = α·Wx + (1−α)·s`) to find the equilibrium opinion vector.
+2. **Friedkin-Johnsen simulation** — Runs the Friedkin-Johnsen iterative update (`x = α·Wx + (1−α)·s`) to find the equilibrium opinion vector.
 
 3. **Greedy influence maximization** — Scores all nodes by influence (power-iteration proxy), selects the top-1000 candidates, then greedily picks the 10 seeds whose intervention (pinning a node to full support) maximizes the mean opinion lift.
 
