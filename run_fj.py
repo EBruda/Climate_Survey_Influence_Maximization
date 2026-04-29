@@ -306,8 +306,8 @@ def evaluate_seed_set(seed_indices, W, s, alpha):
 def plot_distribution_shift(x_baseline, x_final, year):
     os.makedirs(VIZ_DIR, exist_ok=True)
     plt.figure()
-    plt.hist(x_baseline, bins=50, alpha=0.5, label="Baseline")
     plt.hist(x_final, bins=50, alpha=0.5, label="After Seeding")
+    plt.hist(x_baseline, bins=50, alpha=0.5, label="Baseline")
     plt.xlabel("Net Opinion (favor − oppose) / 100")
     plt.ylabel("Number of Users")
     plt.title(f"Opinion Distribution Shift — {year}")
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     print(f"Baseline mean opinion : {baseline_mean:.4f}")
     print(f"Final mean opinion    : {final_mean:.4f}")
     print(f"Improvement           : {final_mean - baseline_mean:.4f}")
-    print(f"Counties improved     : {np.mean(x_final > x_baseline):.4f}")
+    print(f"Users improved     : {np.mean(x_final > x_baseline):.4f}")
 
     os.makedirs(RESULTS_DIR, exist_ok=True)
     with open(os.path.join(RESULTS_DIR, f"{year}_results.pickle"), "wb") as f:

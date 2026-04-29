@@ -14,3 +14,4 @@ dependencies:
   - pip
   - pip:
       - reverse_geocoder
+      - openpyxl
