@@ -8,3 +8,6 @@ tl_2020_us_county/
 tl_2024_us_county/
 *.csv
 *.xlsx
+.DS_Store
+fixed_2024_opinions.png
+.claude/settings.local.json
